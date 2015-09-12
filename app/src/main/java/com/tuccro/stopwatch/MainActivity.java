@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int timerAccuracy = 20;
+
     TextView tvTimer;
     Button btStart;
 
@@ -19,21 +21,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initViews();
+    }
+
+    private void initViews() {
+
         tvTimer = (TextView) findViewById(R.id.tv_timer);
         btStart = (Button) findViewById(R.id.bt_start);
 
-
-        btStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (task == null || task.isCancelled()) {
-                    startTimer();
-                } else {
-                    if (task.getStatus() == AsyncTask.Status.RUNNING) stopTimer();
-                }
-            }
-        });
+        btStart.setOnClickListener(onClickListener);
     }
 
     void stopTimer() {
@@ -48,28 +44,25 @@ public class MainActivity extends AppCompatActivity {
         btStart.setText(getResources().getString(R.string.stop));
     }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (task == null || task.isCancelled()) {
+                startTimer();
+            } else {
+                if (task.getStatus() == AsyncTask.Status.RUNNING) stopTimer();
+            }
+        }
+    };
+
     class TimerTask extends AsyncTask {
+
+        private static final long MILLIS_IN_HOUR = 3600000;
+        private static final long MILLIS_IN_MINUTE = 60000;
+        private static final long MILLIS_IN_SECOND = 1000;
 
         boolean run;
         long timeFromStart = 0;
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-
-            long startTime = System.currentTimeMillis();
-
-            while (run) {
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                timeFromStart = System.currentTimeMillis() - startTime;
-                publishProgress();
-            }
-            return null;
-        }
 
         protected void setRun(boolean run) {
             this.run = run;
@@ -82,17 +75,31 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        protected Object doInBackground(Object[] params) {
+
+            long startTime = System.currentTimeMillis();
+
+            while (run) {
+                try {
+                    Thread.sleep(timerAccuracy);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                timeFromStart = System.currentTimeMillis() - startTime;
+                publishProgress();
+            }
+            return null;
+        }
+
+        @Override
         protected void onProgressUpdate(Object[] values) {
             super.onProgressUpdate(values);
 
-            tvTimer.setText(getFormattedTime());
+            tvTimer.setText(getFormattedTimeString());
         }
 
-        private static final long MILLIS_IN_HOUR = 3600000;
-        private static final long MILLIS_IN_MINUTE = 60000;
-        private static final long MILLIS_IN_SECOND = 1000;
-
-        String getFormattedTime() {
+        private String getFormattedTimeString() {
 
             long time = timeFromStart;
 
