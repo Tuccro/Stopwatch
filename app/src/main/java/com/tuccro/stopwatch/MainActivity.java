@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void stopTimer() {
-        task.cancel(false);
+        task.setRun(false);
         task = null;
         btStart.setText(getResources().getString(R.string.start));
     }
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     class TimerTask extends AsyncTask {
 
-        boolean run = true;
+        boolean run;
         long timeFromStart = 0;
 
         @Override
@@ -67,9 +67,18 @@ public class MainActivity extends AppCompatActivity {
 
                 timeFromStart = System.currentTimeMillis() - startTime;
                 publishProgress();
-
             }
             return null;
+        }
+
+        protected void setRun(boolean run) {
+            this.run = run;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            run = true;
         }
 
         @Override
@@ -77,12 +86,6 @@ public class MainActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
 
             tvTimer.setText(getFormattedTime());
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            run = false;
         }
 
         private static final long MILLIS_IN_HOUR = 3600000;
