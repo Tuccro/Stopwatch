@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             while (run) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             time = time % MILLIS_IN_MINUTE;
 
             long seconds = time / MILLIS_IN_SECOND;
+            time = time % MILLIS_IN_SECOND;
 
             String sHours = (hours == 0) ? "00" :
                     (hours < 10) ? "0" + String.valueOf(hours) : String.valueOf(hours);
@@ -110,8 +111,11 @@ public class MainActivity extends AppCompatActivity {
                     (minutes < 10) ? "0" + String.valueOf(minutes) : String.valueOf(minutes);
             String sSeconds = (seconds == 0) ? "00" :
                     (seconds < 10) ? "0" + String.valueOf(seconds) : String.valueOf(seconds);
+            String sMilliseconds = (time == 0) ? "000" :
+                    (time < 100) ? "0" + String.valueOf(time) :
+                            (time < 10) ? "00" + String.valueOf(time) : String.valueOf(time);
 
-            return sHours + ":" + sMinutes + ":" + sSeconds;
+            return sHours + ":" + sMinutes + ":" + sSeconds + ":" + sMilliseconds;
         }
     }
 }
