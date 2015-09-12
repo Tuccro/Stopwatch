@@ -107,13 +107,16 @@ public class MainActivity extends AppCompatActivity {
 
             String sHours = (hours == 0) ? "00" :
                     (hours < 10) ? "0" + String.valueOf(hours) : String.valueOf(hours);
+
             String sMinutes = (minutes == 0) ? "00" :
                     (minutes < 10) ? "0" + String.valueOf(minutes) : String.valueOf(minutes);
+
             String sSeconds = (seconds == 0) ? "00" :
                     (seconds < 10) ? "0" + String.valueOf(seconds) : String.valueOf(seconds);
+
             String sMilliseconds = (time == 0) ? "000" :
-                    (time < 100) ? "0" + String.valueOf(time) :
-                            (time < 10) ? "00" + String.valueOf(time) : String.valueOf(time);
+                    (time < 10) ? "00" + String.valueOf(time) :
+                            (time < 100) ? "0" + String.valueOf(time) : String.valueOf(time);
 
             return sHours + ":" + sMinutes + ":" + sSeconds + ":" + sMilliseconds;
         }
