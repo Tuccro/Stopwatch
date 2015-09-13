@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tvTimer;
     Button btStart;
+    NumberPicker npAccuracy;
 
     TimerTask task;
 
@@ -28,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
         tvTimer = (TextView) findViewById(R.id.tv_timer);
         btStart = (Button) findViewById(R.id.bt_start);
+
+        npAccuracy = (NumberPicker) findViewById(R.id.number_picker);
+        npAccuracy.setMinValue(5);
+        npAccuracy.setMaxValue(100);
 
         btStart.setOnClickListener(onClickListener);
     }
@@ -48,9 +54,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (task == null || task.isCancelled()) {
+
+                timerAccuracy = npAccuracy.getValue();
+                npAccuracy.setEnabled(false);
+
                 startTimer();
             } else {
-                if (task.getStatus() == AsyncTask.Status.RUNNING) stopTimer();
+
+                if (task.getStatus() == AsyncTask.Status.RUNNING) {
+
+                    stopTimer();
+                    npAccuracy.setEnabled(true);
+                }
             }
         }
     };
