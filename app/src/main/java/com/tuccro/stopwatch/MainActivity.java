@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         npAccuracy = (NumberPicker) findViewById(R.id.number_picker);
         npAccuracy.setMinValue(5);
-        npAccuracy.setMaxValue(100);
+        npAccuracy.setMaxValue(300);
 
         btStart.setOnClickListener(onClickListener);
     }

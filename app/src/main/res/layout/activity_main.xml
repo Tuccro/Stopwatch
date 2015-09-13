@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/CadetBlue"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
@@ -17,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_32"
-            android:text="@string/timer_accuracy_text" />
+            android:text="@string/timer_accuracy_text"
+            android:nestedScrollingEnabled="false" />
 
         <NumberPicker
             android:id="@+id/number_picker"
@@ -26,16 +28,20 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_32"
-            android:background="@color/LightCyan" />
+            android:background="@color/LightCyan"
+            android:nestedScrollingEnabled="false"
+            android:orientation="horizontal"
+            android:measureWithLargestChild="false" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_timer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="00:00:00:000"
+        android:textColor="@color/White"
         android:textSize="@dimen/big_text_size" />
 
     <Button
