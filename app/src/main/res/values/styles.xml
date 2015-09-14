@@ -1,13 +1,9 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
-
-    <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/Blue</item>
-        <!--<item name="android:textColor">@color/Blue</item>-->
+    <style name="BaseTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/LightBlue</item>
+        <item name="colorPrimaryDark">@color/Blue</item>
+        <item name="colorAccent">@color/DarkBlue</item>
     </style>
 
 </resources>

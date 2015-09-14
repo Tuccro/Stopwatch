@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_32"
-            android:text="@string/timer_accuracy_text"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            android:text="@string/timer_accuracy_text" />
 
         <NumberPicker
             android:id="@+id/number_picker"
@@ -29,9 +29,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_32"
             android:background="@color/CadetBlue"
+            android:measureWithLargestChild="false"
             android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:measureWithLargestChild="false" />
+            android:orientation="horizontal" />
     </RelativeLayout>
 
     <TextView
