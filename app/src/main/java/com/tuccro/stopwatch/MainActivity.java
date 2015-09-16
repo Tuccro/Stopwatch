@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int timerAccuracy = 20;
+    public static final String SAVED_START_TIME = "saved_start_time";
+    public static final String SAVED_TIME = "saved_time";
+    public static final String SAVED_ACCURACY = "saved_accuracy";
 
     TextView tvTimer;
     Button btStart;
@@ -21,9 +23,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         initViews();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        npAccuracy.setValue(savedInstanceState.getInt(SAVED_ACCURACY));
+
+        if (savedInstanceState.containsKey(SAVED_START_TIME)) {
+
+            startTimer(savedInstanceState.getLong(SAVED_START_TIME), npAccuracy.getValue());
+        } else tvTimer.setText(savedInstanceState.getString(SAVED_TIME));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (task != null
+                && task.getStatus() == AsyncTask.Status.RUNNING) {
+
+            outState.putLong(SAVED_START_TIME, task.getStartTime());
+            stopTimer();
+        } else outState.putString(SAVED_TIME, tvTimer.getText().toString());
+
+        outState.putInt(SAVED_ACCURACY, npAccuracy.getValue());
     }
 
     private void initViews() {
@@ -44,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         btStart.setText(getResources().getString(R.string.start));
     }
 
-    void startTimer() {
-        task = new TimerTask();
+    void startTimer(long startTime, int accuracy) {
+        task = new TimerTask(startTime, accuracy);
         task.execute();
         btStart.setText(getResources().getString(R.string.stop));
     }
@@ -55,10 +84,9 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (task == null || task.isCancelled()) {
 
-                timerAccuracy = npAccuracy.getValue();
                 npAccuracy.setEnabled(false);
 
-                startTimer();
+                startTimer(System.currentTimeMillis(), npAccuracy.getValue());
             } else {
 
                 if (task.getStatus() == AsyncTask.Status.RUNNING) {
@@ -77,7 +105,19 @@ public class MainActivity extends AppCompatActivity {
         private static final long MILLIS_IN_SECOND = 1000;
 
         boolean run;
-        long timeFromStart = 0;
+        long timeFromStart;
+        long startTime;
+
+        private int timerAccuracy;
+
+        public long getStartTime() {
+            return startTime;
+        }
+
+        public TimerTask(long startTime, int accuracy) {
+            this.startTime = startTime;
+            this.timerAccuracy = accuracy;
+        }
 
         protected void setRun(boolean run) {
             this.run = run;
@@ -91,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-
-            long startTime = System.currentTimeMillis();
 
             while (run) {
                 try {
